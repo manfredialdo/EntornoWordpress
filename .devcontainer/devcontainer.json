@@ -1,0 +1,29 @@
+{
+  "name": "mi multientorno WordPress ",
+  
+  // Le indicamos que apunte al archivo docker-compose
+  "dockerComposeFile": "docker-compose.yml",
+  
+  // El servicio principal con el que interactúa VS Code
+  "service": "wordpress",
+  
+  // Carpeta donde se montará nuestro código dentro del contenedor
+  "workspaceFolder": "/var/www/html",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker" // Para administrar los contenedores visualmente
+      ]
+    }
+  },
+
+  // Exponemos el puerto de WordPress (8080)
+  "forwardPorts": [8080],
+  "portsAttributes": {
+    "8080": {
+      "label": "Sitio WordPress",
+      "onAutoForward": "openPreview" 
+    }
+  }
+}
