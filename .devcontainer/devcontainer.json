@@ -4,19 +4,36 @@
   // 1. Usamos la imagen oficial de PHP recomendada en la documentación
   "image": "mcr.microsoft.com/devcontainers/php:1-8.2-bullseye",
 
+
+  // NUEVO: Agregamos la "Feature" oficial para instalar Python de forma nativa e inyectarla en el contenedor de PHP
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "installTools": true,
+      "version": "latest"
+    }
+  },
+
+
   // 2. Mapeamos el puerto 8080 para visualizar WordPress de forma automática
   "forwardPorts": [
-    8080
+    8080,
+    5000
   ],
+
+
   "portsAttributes": {
     "8080": {
       "label": "Tu WordPress",
       "onAutoForward": "openPreview"
+    },
+    "5000": {
+      "label": "Tu App de Flask (IA)",
+      "onAutoForward": "silent"
     }
   },
 
   // 3. Instalamos las herramientas necesarias e inicializamos la base de datos y la descarga de WP
-  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y mariadb-server php-mysql php-xml php-mbstring php-curl && sudo service mariadb start && sudo mysql -u root -e \"CREATE DATABASE IF NOT EXISTS wordpress_db; CREATE USER IF NOT EXISTS 'wp_user'@'localhost' IDENTIFIED BY 'wp_password'; GRANT ALL PRIVILEGES ON wordpress_db.* TO 'wp_user'@'localhost'; FLUSH PRIVILEGES;\" && if [ ! -f wp-config-sample.php ]; then curl -O https://wordpress.org/latest.tar.gz && tar -xzf latest.tar.gz --strip-components=1 && rm latest.tar.gz; fi && sudo sed -i 's/Listen 80$/Listen 8080/' /etc/apache2/ports.conf && sudo sed -i 's/<VirtualHost \\* :80>/<VirtualHost \\* :8080>/' /etc/apache2/sites-enabled/000-default.conf",
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y mariadb-server php-mysql php-xml php-mbstring php-curl && sudo service mariadb start && sudo mysql -u root -e \"CREATE DATABASE IF NOT EXISTS wordpress_db; CREATE USER IF NOT EXISTS 'wp_user'@'localhost' IDENTIFIED BY 'wp_password'; GRANT ALL PRIVILEGES ON wordpress_db.* TO 'wp_user'@'localhost'; FLUSH PRIVILEGES;\" && if [ ! -f wp-config-sample.php ]; then curl -O https://wordpress.org/latest.tar.gz && tar -xzf latest.tar.gz --strip-components=1 && rm latest.tar.gz; fi && sudo sed -i 's/Listen 80$/Listen 8080/' /etc/apache2/ports.conf && sudo sed -i 's/<VirtualHost \\* :80>/<VirtualHost \\* :8080>/' /etc/apache2/sites-enabled/000-default.conf && pip3 install flask requests",
 
   // 4. Aseguramos que tanto MariaDB como Apache se enciendan siempre al iniciar el Codespace
   "postStartCommand": "sudo service mariadb start && sudo apache2ctl start",
