@@ -1,3 +1,4 @@
+
 # 🧪 Laboratorio de Automatización: 
 ### Jugando con las funcionalidades de GitHub Codespaces
 
@@ -26,9 +27,36 @@ Tengo el entorno estructurado en tres scripts bash (`.sh`) automatizados que res
     *   `POST /v1/ffmpeg/compose` (Mezcla final de video, audio de voz y subtítulos).
 
 ---
+## 🚀 setup_ollama.sh
 
-## 🚦 Estado Actual del Entorno
+Una vez que el script de autoconfiguración haya finalizado y el servidor esté corriendo, puedes interactuar con el modelo local de dos formas:
+
+### 🛠️ Metodo 1 por chat
+
+Para conversar directamente con el modelo desde la consola de tu Codespace, abre una terminal y ejecuta el siguiente comando:
 
 ```bash
-@manfredialdo ➜ /workspaces/EntornoWordpress (main) $ ls
-n8n_AIVideos01.sh  n8n_AIVideos02.sh  n8n_instala.sh  README.md
+ollama run llama3.2:1b // abre un chat
+```
+
+### 🛠️ Metodo 2 por terminal usando apis
+
+```bash
+curl http://localhost:11434/api/generate -d '{
+  "model": "llama3.2:1b",
+  "prompt": "¿Por qué el cielo es azul? Respóndeme en un párrafo corto.",
+  "stream": false
+}'
+
+
+
+entornosVirtuales
+
+n8n_AIVideos01.sh  
+n8n_AIVideos02.sh  
+n8n_instala.sh  
+README.md 
+setup_ollama.sh
+
+
+comando util: zip -r 20260706xaldoxxxencualquierlugar.zip * -x ".*"
